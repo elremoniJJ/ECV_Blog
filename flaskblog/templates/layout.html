@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required Bootstrap meta reference and CDN link for CSS --->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    {% if title %}
+        <title>English Blog - {{ title }} </title>
+    {% else %}
+        <title>English Blog</title>
+    {% endif %}
+
+</head>
+<body>
+
+    <header class="site-handler">
+        <nav class="navbar navbar-extend-md navbar-dark bg-steel fixed-top">
+            <div class="container">
+                <a class="navbar-brand mr-4" href="/">Practice English long-form</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                    <!-- Lefthand-side-->
+                    <div class="navbar-nav mr-auto">
+                        <a class="nav-item nav-link" href="{{ url_for('main.home') }}">Home</a>
+                        <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
+                    </div>
+
+                    <!-- Righthand-side-->
+                    <div class="navbar-nav">
+                        {% if current_user.is_authenticated %}
+                            <a class="nav-item nav-link" href="{{ url_for('posts.new_post') }}">New Post</a>
+                            <a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>
+                            <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+			    {% if current_user.username == 'jj' %}
+                                <a class="nav-item nav-link" href="{{ url_for('users.all_users') }}">Something</a>
+                            {% endif %}
+                        {% else %}
+                            <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
+                            <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <!-- 'with_categories' refers to the bootstrap styles -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                {% block content %}
+                {% endblock %}
+            </div>
+            <div class="col-md-4">
+                <div class="content-section">
+                    <h3>Our sidebar</h3>
+                    <p class="text-muted">Some text that can be changed later
+                        <ul>
+                            <li>Latest posts</li>
+                            <li>Announcements</li>
+                            <li>Calendars</li>
+                            <li>Etc</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+
+</body>
+</html>
